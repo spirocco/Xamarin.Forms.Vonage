@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Xamarin.Forms.Vonage</id>
@@ -34,19 +34,19 @@
     <file src="images\logo.png" target="images\" />
 
     <!--Net Standard2.0-->
-    <file src="Lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.dll" target="lib\netstandard2.0\Xamarin.Forms.Vonage.dll" />
-    <file src="Lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.pdb" target="lib\netstandard2.0\Xamarin.Forms.Vonage.pdb" />
+    <file src="lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.dll" target="lib\netstandard2.0\Xamarin.Forms.Vonage.dll" />
+    <file src="lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.pdb" target="lib\netstandard2.0\Xamarin.Forms.Vonage.pdb" />
 
     <!--Xamarin.Android-->
-    <file src="Lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.dll" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.dll" />
-    <file src="Lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.pdb" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.pdb" />
-    <file src="Lib\Xamarin.Forms.Vonage.Android\bin\Release\Xamarin.Forms.Vonage.Android.dll" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.Android.dll" />
-    <file src="Lib\Xamarin.Forms.Vonage.Android\bin\Release\Xamarin.Forms.Vonage.Android.pdb" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.Android.pdb" />
+    <file src="lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.dll" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.dll" />
+    <file src="lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.pdb" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.pdb" />
+    <file src="lib\Xamarin.Forms.Vonage.Android\bin\Release\Xamarin.Forms.Vonage.Android.dll" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.Android.dll" />
+    <file src="lib\Xamarin.Forms.Vonage.Android\bin\Release\Xamarin.Forms.Vonage.Android.pdb" target="lib\MonoAndroid10\Xamarin.Forms.Vonage.Android.pdb" />
 
     <!--Xamarin.iOS-->
-    <file src="Lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.dll" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.dll" />
-    <file src="Lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.pdb" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.pdb" />
-    <file src="Lib\Xamarin.Forms.Vonage.iOS\bin\Release\Xamarin.Forms.Vonage.iOS.dll" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.iOS.dll" />
-    <file src="Lib\Xamarin.Forms.Vonage.iOS\bin\Release\Xamarin.Forms.Vonage.iOS.pdb" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.iOS.pdb" />
+    <file src="lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.dll" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.dll" />
+    <file src="lib\Xamarin.Forms.Vonage\bin\Release\netstandard2.0\Xamarin.Forms.Vonage.pdb" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.pdb" />
+    <file src="lib\Xamarin.Forms.Vonage.iOS\bin\Release\Xamarin.Forms.Vonage.iOS.dll" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.iOS.dll" />
+    <file src="lib\Xamarin.Forms.Vonage.iOS\bin\Release\Xamarin.Forms.Vonage.iOS.pdb" target="lib\Xamarin.iOS10\Xamarin.Forms.Vonage.iOS.pdb" />
   </files>
 </package>
