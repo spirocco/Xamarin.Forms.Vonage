@@ -373,6 +373,8 @@ namespace Xamarin.Forms.Vonage.Android.Services
                 PublisherKit.PublishVideo = false;
                 PublisherKit.StreamCreated -= OnPublisherStreamCreated;
                 Session.Unpublish(PublisherKit);
+                PublisherKit.Capturer.StopCapture();
+                PublisherKit.Capturer.Destroy();
                 PublisherKit.Destroy();
             }
             PublisherKit = null;
