@@ -355,7 +355,7 @@ namespace Xamarin.Forms.Vonage.Android.Services
 
         private void OnSignal(object sender, Session.SignalEventArgs e)
         {
-            if (e.P3.ConnectionId != Session.Connection.ConnectionId)
+            if (!(IgnoreSentMessages && e.P3.ConnectionId == Session.Connection.ConnectionId))
             {
                 RaiseMessageReceived(e.P2, e.P1);
             }
