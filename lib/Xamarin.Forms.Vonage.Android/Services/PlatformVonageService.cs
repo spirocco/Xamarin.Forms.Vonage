@@ -4,11 +4,12 @@ using System.Linq;
 using Android;
 using Android.Content.PM;
 using Android.Runtime;
-using Android.Support.V4.App;
-using Android.Support.V4.Content;
 using Com.Opentok.Android;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using Android.OS;
+using AndroidX.Core.Content;
+using AndroidX.Core.App;
 
 namespace Xamarin.Forms.Vonage.Android.Services
 {
@@ -21,12 +22,6 @@ namespace Xamarin.Forms.Vonage.Android.Services
         private readonly object _sessionLocker = new();
         private readonly ObservableCollection<string> _subscriberStreamIds = new();
         private readonly Collection<SubscriberKit> _subscribers = new();
-        private static readonly Dictionary<CameraResolution, Publisher.CameraCaptureResolution> cameraResolutions = new Dictionary<CameraResolution, Publisher.CameraCaptureResolution>()
-        {
-            { CameraResolution.Low, Publisher.CameraCaptureResolution.Low },
-            { CameraResolution.Medium, Publisher.CameraCaptureResolution.Medium },
-            { CameraResolution.High, Publisher.CameraCaptureResolution.High }
-        };
 
         public PlatformVonageService()
         {
@@ -132,14 +127,14 @@ namespace Xamarin.Forms.Vonage.Android.Services
             return !shouldGrantPermissions;
         }
 
-        public override bool TrySendMessage(string signalType, string message)
+        public override bool TrySendMessage(string message, string messageType)
         {
             if (Session == null)
             {
                 return false;
             }
 
-            Session.SendSignal(signalType, message);
+            Session.SendSignal(messageType ?? string.Empty, message);
             return true;
         }
 
@@ -149,6 +144,11 @@ namespace Xamarin.Forms.Vonage.Android.Services
         {
             switch (e.PropertyName)
             {
+                case nameof(PublisherName):
+                case nameof(PublisherVideoType):
+                case nameof(PublisherCameraResolution):
+                    OnConnected(this, new Session.ConnectedEventArgs(Session));
+                    return;
                 case nameof(IsVideoPublishingEnabled):
                     UpdatePublisherProperty(p => p.PublishVideo = IsVideoPublishingEnabled);
                     return;
@@ -157,9 +157,6 @@ namespace Xamarin.Forms.Vonage.Android.Services
                     return;
                 case nameof(PublisherVideoScaleStyle):
                     UpdatePublisherProperty(SetVideoScaleStyle);
-                    return;
-                case nameof(PublisherVideoType):
-                    OnConnected(this, new Session.ConnectedEventArgs(Session));
                     return;
                 case nameof(IsVideoSubscriptionEnabled):
                     UpdateSubscriberProperty(s => s.SubscribeToVideo = IsVideoSubscriptionEnabled);
@@ -197,9 +194,12 @@ namespace Xamarin.Forms.Vonage.Android.Services
                 yield return Manifest.Permission.Camera;
             }
 
-            if (Permissions.HasFlag(VonagePermission.WriteExternalStorage))
+            if ((int)Build.VERSION.SdkInt < 33)
             {
-                yield return Manifest.Permission.WriteExternalStorage;
+                if (Permissions.HasFlag(VonagePermission.WriteExternalStorage))
+                {
+                    yield return Manifest.Permission.WriteExternalStorage;
+                }
             }
 
             if (Permissions.HasFlag(VonagePermission.RecordAudio))
@@ -215,6 +215,24 @@ namespace Xamarin.Forms.Vonage.Android.Services
             if (Permissions.HasFlag(VonagePermission.Bluetooth))
             {
                 yield return Manifest.Permission.Bluetooth;
+            }
+
+            if ((int)Build.VERSION.SdkInt >= 33)
+            {
+                if (Permissions.HasFlag(VonagePermission.ReadMediaAudio))
+                {
+                    yield return Manifest.Permission.ReadMediaAudio;
+                }
+
+                if (Permissions.HasFlag(VonagePermission.ReadMediaImages))
+                {
+                    yield return Manifest.Permission.ReadMediaImages;
+                }
+
+                if (Permissions.HasFlag(VonagePermission.ReadMediaVideo))
+                {
+                    yield return Manifest.Permission.ReadMediaVideo;
+                }
             }
 
             yield return Manifest.Permission.Internet;
@@ -235,7 +253,7 @@ namespace Xamarin.Forms.Vonage.Android.Services
             ClearPublisher();
 
             using var builder = new Publisher.Builder(PlatformVonage.Activity.ApplicationContext)
-                .Resolution(cameraResolutions[PublisherCameraResolution])
+                .Resolution(GetResolution())
                 .VideoTrack(Permissions.HasFlag(VonagePermission.Camera))
                 .AudioTrack(Permissions.HasFlag(VonagePermission.RecordAudio))
                 .Name(PublisherName);
@@ -286,7 +304,7 @@ namespace Xamarin.Forms.Vonage.Android.Services
 
         private void OnError(object sender, Session.ErrorEventArgs e)
         {
-            RaiseError(e.P1?.Message);
+            RaiseErrorOccurred(e.P1?.Message);
             EndSession();
         }
 
@@ -337,9 +355,9 @@ namespace Xamarin.Forms.Vonage.Android.Services
 
         private void OnSignal(object sender, Session.SignalEventArgs e)
         {
-            if (!(IgnoreSentMessages && e.P3.ConnectionId == Session.Connection.ConnectionId))
+            if (e.P3.ConnectionId != Session.Connection.ConnectionId)
             {
-                RaiseMessageReceived(e.P2);
+                RaiseMessageReceived(e.P2, e.P1);
             }
         }
 
@@ -390,5 +408,16 @@ namespace Xamarin.Forms.Vonage.Android.Services
             => scaleStyle == VonageVideoScaleStyle.Fill
                 ? BaseVideoRenderer.StyleVideoFill
                 : BaseVideoRenderer.StyleVideoFit;
+
+        private Publisher.CameraCaptureResolution GetResolution()
+        {
+            switch (PublisherCameraResolution)
+            {
+                case VonagePublisherCameraResolution.High: return Publisher.CameraCaptureResolution.High;
+                case VonagePublisherCameraResolution.Medium: return Publisher.CameraCaptureResolution.Medium;
+                case VonagePublisherCameraResolution.Low: return Publisher.CameraCaptureResolution.Low;
+                default: return Publisher.CameraCaptureResolution.High;
+            }
+        }
     }
 }
