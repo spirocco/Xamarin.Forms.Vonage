@@ -374,7 +374,6 @@ namespace Xamarin.Forms.Vonage.Android.Services
                 subscriberKit.VideoDisabled -= OnSubscriberVideoDisabled;
                 subscriberKit.VideoEnabled -= OnSubscriberVideoEnabled;
                 Session.Unsubscribe(subscriberKit);
-                subscriberKit.Destroy();
             }
         }
 
@@ -391,8 +390,6 @@ namespace Xamarin.Forms.Vonage.Android.Services
                 PublisherKit.PublishVideo = false;
                 PublisherKit.StreamCreated -= OnPublisherStreamCreated;
                 Session.Unpublish(PublisherKit);
-                PublisherKit.Capturer.Destroy();
-                PublisherKit.Destroy();
             }
             PublisherKit = null;
         }
